@@ -27,30 +27,32 @@ function handleSearch() {
 // function makeWeatherRequest( search ) {
 // function makeWeatherRequest( ) {
     // Perfoming an AJAX GET request to our queryURL
-$("#find-city").on("click", function(event) {
 
-    event.preventDefault();
 
-    var apiKey = "&appid=fbc8e0f7f4930b8cc94ef9a73ca2f05d";
-    // cityName = "Louisville";
-    var cityName = $("#city-name");
-    var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}${apiKey}`;
+$( document ).ready(function() {
 
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function(response) {
-        
-        
-            console.log(response)
+    var apiKey = "fbc8e0f7f4930b8cc94ef9a73ca2f05d";
+
+    $(".query_btn").click(function(){
+
+        var query_param = $(this).prev().val();
+
+        var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + query_param + "&APPID=" + apiKey;
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+          }).then(function(response) {
+              console.log(response)
+            $("#city").text(response.name);
+            $("#main_weather").text(response.weather[0].main);
+            $("#description_weather").text(response.weather[0].description);
+            $("#temperature").text(((((response.main.temp)-273.15)*9/5)+32).toFixed(2));
+            $("#pressure").text(response.main.pressure);
+            $("#humidity").text(response.main.humidity);
         });
+    })
 
-})
-
-
-function makeOneCallRequest ( lat, long ) {
-
-
-}
+});
 
 // $("#find-city").on("click", makeWeatherRequest);
