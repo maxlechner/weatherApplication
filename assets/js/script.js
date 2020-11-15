@@ -16,18 +16,41 @@
 
 // WHEN I click the search button
 
+var cityName;
+
 function handleSearch() {
 
     makeWeatherRequest( search );
 
 }
 
-function makeWeatherRequest( search ) {
+// function makeWeatherRequest( search ) {
+// function makeWeatherRequest( ) {
+    // Perfoming an AJAX GET request to our queryURL
+$("#find-city").on("click", function(event) {
 
+    event.preventDefault();
 
-}
+    var apiKey = "&appid=fbc8e0f7f4930b8cc94ef9a73ca2f05d";
+    // cityName = "Louisville";
+    var cityName = $("#city-name");
+    var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}${apiKey}`;
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response) {
+        
+        
+            console.log(response)
+        });
+
+})
+
 
 function makeOneCallRequest ( lat, long ) {
 
-    
+
 }
+
+// $("#find-city").on("click", makeWeatherRequest);
