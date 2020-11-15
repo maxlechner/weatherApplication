@@ -31,6 +31,10 @@ function handleSearch() {
 
 $( document ).ready(function() {
 
+    var now = moment().format("dddd, MMMM Do, YYYY");
+
+    $('#currentDay').text(now);
+
     var apiKey = "fbc8e0f7f4930b8cc94ef9a73ca2f05d";
 
     $(".query_btn").click(function(){
