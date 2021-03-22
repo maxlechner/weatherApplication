@@ -9,7 +9,6 @@ const apiKey = "fbc8e0f7f4930b8cc94ef9a73ca2f05d";
 
 $("#add-city").on("click", function ( event ) {
 
-    $("#currentDay").text(now);
 
     event.preventDefault();
 
@@ -51,7 +50,8 @@ function citySearch ( city ) {
             method: "GET"
           }).then(function(response) {
               console.log(response)
-            $("#city").text(response.name);
+            $("#city").text(response.name + " " + now);
+            $("currentDay").text(now)
             $("#weatherImg").attr(
                 "src",
                 "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png"
@@ -78,35 +78,41 @@ function citySearch ( city ) {
             var forecastQueryUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&APPID=" + apiKey;
 
             $.ajax({
+
                 url: forecastQueryUrl,
                 method: "GET"
+
             }).then(function(forecast) {
                 
-                console.log(forecast)
                 let indexForecast = 1;
 
                 $("#cityFC" ).text("5 day forecast for " + forecast.city.name);
 
-                for (var i = 0; i < forecast.list.length; i++) {
+                console.log(forecast.list.length)
 
-                  let date = forecast.list[8 * i].dt_txt.split(" ")[0];
+                for (let i = 0; i < (forecast.list.length); i++) {
 
-                  console.log(date)
-
-                  $("#day" + indexForecast ).children("#date").text("Date: " + forecast.list[i].dt_txt);
-                  $("#weatherImg" + indexForecast ).attr(
+                  $("#day" + indexForecast).children("#date").text("Date: " + forecast.list[i].dt_txt);
+                  $("#weatherImg" + indexForecast).attr(
                     "src",
                     "http://openweathermap.org/img/w/" + forecast.list[i].weather[0].icon + ".png"
                   );
-                  $("#day" + indexForecast ).children("#temperature").text("Temperature: " + ((((forecast.list[i].main.temp)-273.15)*9/5)+32).toFixed(2) + " °F");
-                  $("#day" + indexForecast ).children("#humidity").text("Humidity: " + forecast.list[i].main.humidity + "%");
-                  $("#day" + indexForecast ).children("#wind").text("Wind: " + forecast.list[i].main.wind.speed + "mph");
+                  $("#day" + indexForecast).children("#temperature").text("Temperature: " + ((((forecast.list[i].main.temp)-273.15)*9/5)+32).toFixed(2) + " °F");
+                //   $("#temperature" + i).text("Temperature1: " + ((((forecast.list[i].main.temp)-273.15)*9/5)+32).toFixed(2) + " °F");
+                  $("#day" + indexForecast).children("#pressure").text("Pressure: " + forecast.list[i].main.pressure);
+                  $("#day" + indexForecast).children("#humidity").text("Humidity: " + forecast.list[i].main.humidity + "%");
+                  $("#day" + indexForecast).children("#wind").text("Wind: " + forecast.list[i].main.wind.speed + "mph");
+
                   
                   indexForecast ++;
                 }
+
             });
+
         renderCityButtons();
+    
     });
+
 }
           
           //Renders buttons based on cities searched. Also includes searches in local storage
