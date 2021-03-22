@@ -14,8 +14,6 @@ $("#add-city").on("click", function ( event ) {
 
     let city = $("#city-search").val();
 
-    console.log( city )
-
     const getCitySearches = localStorage.getItem("searchHistory");
 
     let prevSearches = [];
@@ -49,8 +47,8 @@ function citySearch ( city ) {
             url: queryURL,
             method: "GET"
           }).then(function(response) {
-              console.log(response)
-            $("#city").text(response.name + " " + now);
+
+            $("#city").text(response.name + ", " + response.sys.country + " | " + now);
             $("currentDay").text(now)
             $("#weatherImg").attr(
                 "src",
@@ -71,7 +69,7 @@ function citySearch ( city ) {
                 url: uvQueryUrl,
                 method: "GET"
             }).then(function(uvGet) {
-                console.log(uvGet)
+
                 $("#uvindex").text(uvGet.value);
             });
 
@@ -88,9 +86,10 @@ function citySearch ( city ) {
 
                 $("#cityFC" ).text("5 day forecast for " + forecast.city.name);
 
-                console.log(forecast.list.length)
 
-                for (let i = 0; i < (forecast.list.length); i++) {
+                for (let i = 0; i < forecast.list.length; i++) {
+
+
 
                   $("#day" + indexForecast).children("#date").text("Date: " + forecast.list[i].dt_txt);
                   $("#weatherImg" + indexForecast).attr(
@@ -98,13 +97,12 @@ function citySearch ( city ) {
                     "http://openweathermap.org/img/w/" + forecast.list[i].weather[0].icon + ".png"
                   );
                   $("#day" + indexForecast).children("#temperature").text("Temperature: " + ((((forecast.list[i].main.temp)-273.15)*9/5)+32).toFixed(2) + " °F");
-                //   $("#temperature" + i).text("Temperature1: " + ((((forecast.list[i].main.temp)-273.15)*9/5)+32).toFixed(2) + " °F");
                   $("#day" + indexForecast).children("#pressure").text("Pressure: " + forecast.list[i].main.pressure);
                   $("#day" + indexForecast).children("#humidity").text("Humidity: " + forecast.list[i].main.humidity + "%");
-                  $("#day" + indexForecast).children("#wind").text("Wind: " + forecast.list[i].main.wind.speed + "mph");
+                  $("#day" + indexForecast).children("#wind").text("Wind: " + forecast.list[i].wind.speed + "mph");
 
                   
-                  indexForecast ++;
+                  indexForecast++;
                 }
 
             });
